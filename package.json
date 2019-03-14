@@ -1,0 +1,23 @@
+{
+  "name": "bot",
+  "version": "1.0.0",
+  "description": "test bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "canvas-constructor": "^1.0.1",
+    "discord.js": "^11.4.2",
+    "fs-nextra": "^0.3.7",
+    "gifencoder": "^1.1.0",
+    "mysql": "^2.16.0",
+    "nodemon": "^1.18.3",
+    "oxford-dictionary": "^1.4.1",
+    "pm2": "^3.0.4",
+    "r6stats": "0.0.3",
+    "rainbowsix-api-node": "0.0.1"
+  }
+}
