@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const config = require("./libs/token.json");
+const config = require("../token.json");
 //const test = require("./libs/test.json")
 const client = new Discord.Client({
    autoReconnect: true
