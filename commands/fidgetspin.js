@@ -6,7 +6,7 @@ module.exports.run = async (client, message, args, con) => {
       message.channel.send("Wait **30** seconds before spinning the <:spinner:481347451194834945> " + message.author);
    } else {
 
-      let fTime = Math.floor(Math.random() * (350 - 30 + 1)) + 30;
+      let fTime = Math.floor(Math.random() * (450 - 30 + 1)) + 30;
       let aTime = Math.floor(fTime / 60);
       let bTime = Math.floor(fTime - (aTime * 60));
       message.channel.send(`**${message.member.displayName}** has just spun the Fidget Spinner, Let's see how long it spins for!`).then(ms => {
@@ -41,12 +41,12 @@ module.exports.run = async (client, message, args, con) => {
          let fQuery;
 
          if (!rows[0]) {
-            fQuery = `insert into spinner values("${message.author.tag}",${fTime})`
+            fQuery = `insert into spinner values("${message.author.tag}",${fTime})`;
+				con.query(fQuery);
          } else if (rows[0].spintime < fTime) {
-            fQuery = `update spinner set spintime = ${fTime} where id = "${message.author.tag}"`
+            fQuery = `update spinner set spintime = ${fTime} where id = "${message.author.tag}"`;
+				con.query(fQuery);
          }
-
-         con.query(fQuery)
 
       });
       talkedRecently.add(message.author.tag);

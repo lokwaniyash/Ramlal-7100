@@ -16,6 +16,13 @@ module.exports.run = async (client, message, args, con) => {
             let spintime2 = rows[1].spintime;
             let spintime3 = rows[2].spintime;
 
+            let aTime1 = Math.floor(spintime1 / 60);
+            let bTime1 = Math.floor(spintime1 - (aTime1 * 60));
+            let aTime2 = Math.floor(spintime2 / 60);
+            let bTime2 = Math.floor(spintime2 - (aTime2 * 60));
+            let aTime3 = Math.floor(spintime3 / 60);
+            let bTime3 = Math.floor(spintime3 - (aTime3 * 60));
+
             let spinid1 = rows[0].id;
             let spinid2 = rows[1].id;
             let spinid3 = rows[2].id;
@@ -37,15 +44,15 @@ module.exports.run = async (client, message, args, con) => {
                                  description: "Based on the SpinTime Database.",
                                  fields: [{
                                        name: ":trophy: 1",
-                                       value: `@` + spinid1 + ` with maximum spin time of **${spintime1}** seconds.`
+                                       value: `@` + spinid1 + ` with maximum spin time of **${aTime1}** minutes and **${bTime1}** seconds.`
                                     },
                                     {
                                        name: ":trophy: 2",
-                                       value: `@` + spinid2 + ` with maximum spin time of **${spintime2}** seconds.`
+                                       value: `@` + spinid2 + ` with maximum spin time of **${aTime2}** minutes and **${bTime2}** seconds.`
                                     },
                                     {
                                        name: ":trophy: 3",
-                                       value: `@` + spinid3 + ` with maximum spin time of **${spintime3}** seconds.`
+                                       value: `@` + spinid3 + ` with maximum spin time of **${aTime3}** minutes and **${bTime3}** seconds.`
                                     }
                                  ],
                                  footer: {
