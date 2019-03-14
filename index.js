@@ -118,23 +118,24 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
 
 client.on('message', msg => {
 
-   let x = msg.author.id;
-   if (x == "323002072427659267") return;
+   let tempU = msg.author.tag;
 
    if (msg.author.bot) return;
    if (msg.channel.type === "dm") return;
    if (msg.member.hasPermission("ADMINISTRATOR")) return;
 
-   con.query(`select * from xp where id = '${msg.author.id}'`, (err, rows) => {
+   con.query(`select * from xp where id = '${tempU}'`, (err, rows) => {
       if (err) throw err;
 
       let sql;
 
+      console.log(tempU);
+
       if (rows.length < 1) {
-         sql = `insert into xp (id,xp) values ('${msg.author.id}','${generateXp()}')`
+         sql = `insert into xp (id,xp) values ('${tempU}','${generateXp()}')`
       } else {
          let xp = rows[0].xp;
-         sql = `update xp set xp = ${xp + generateXp()} where id = '${msg.author.id}'`;
+         sql = `update xp set xp = ${xp + generateXp()} where id = '${tempU}'`;
       }
 
       con.query(sql);
@@ -357,163 +358,167 @@ client.on('message', message => {
    let cmd = messageArray[0];
    let args = messageArray.slice(1);
    let channel = message.guild.channels.find(c => c.name == "map-veto");
+   if (message.channel === channel) {
+      if (message.content.toLowerCase().startsWith('setleader')) {
 
-   if (message.content.toLowerCase().startsWith('setleader') && message.channel === channel) {
+         let lead1 = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+         let lead2 = message.guild.member(message.mentions.users.last());
+         let myRole = message.guild.roles.find(f => f.name == "Team Leader");
 
-      let lead1 = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
-      let lead2 = message.guild.member(message.mentions.users.last());
-      let myRole = message.guild.roles.find(f => f.name == "Team Leader");
+         u1 = lead1;
+         u2 = lead2;
 
-      u1 = lead1;
-      u2 = lead2;
+         curu = lead1;
 
-      curu = lead1;
+         if (!lead1 && !lead2) return message.channel.send('"setleader @user1 @user2"');
+         if (lead1 === lead2) return //message.channel.send('both leaders cant be the same');
+         if (!lead2) return //message.channel.send('mention a second team leader too!');
 
-      if (!lead1 && !lead2) return message.channel.send('"setleader @user1 @user2"');
-      if (lead1 === lead2) return //message.channel.send('both leaders cant be the same');
-      if (!lead2) return //message.channel.send('mention a second team leader too!');
+         lead1.addRole(myRole);
+         lead2.addRole(myRole);
 
-      lead1.addRole(myRole);
-      lead2.addRole(myRole);
+         let toss = [`${u1.displayName}`, `${u2.displayName}`];
+         let uToss = Math.floor((Math.random() * toss.length));
+         const result = toss[uToss];
 
-      let toss = [`${u1.displayName}`, `${u2.displayName}`];
-      let uToss = Math.floor((Math.random() * toss.length));
-      const result = toss[uToss];
+         //   message.channel.send({embed: {
+         //     color: 3447003,
+         //     author: {
+         //       name: "MAP-VETO",
+         //       icon_url: client.user.avatarURL
+         //     },
+         //     description: "List of Maps to choose from...",
+         //     fields: [{
+         //         name: ".",
+         //         value: "**BANK**"
+         //       },
+         //       {
+         //         name: ".",
+         //         value: "**BORDER**"
+         //       },
+         //       {
+         //         name: ".",
+         //         value: "**CLUB HOUSE**"
+         //       },
+         //       {
+         //         name: ".",
+         //         value: "**COASTLINE**"
+         //       },
+         //       {
+         //         name: ".",
+         //         value: "**CONSULATE**"
+         //       },
+         //       {
+         //         name: ".",
+         //         value: "**OREGON**"
+         //       },
+         //       {
+         //         name: ".",
+         //         value: "**VILLA**"
+         //       }
+         //     ],
+         //     footer: {
+         //       icon_url: client.user.avatarURL,
+         //       text: `The Ramlals Tournament`
+         //     }
+         //   }
+         // });
 
-      //   message.channel.send({embed: {
-      //     color: 3447003,
-      //     author: {
-      //       name: "MAP-VETO",
-      //       icon_url: client.user.avatarURL
-      //     },
-      //     description: "List of Maps to choose from...",
-      //     fields: [{
-      //         name: ".",
-      //         value: "**BANK**"
-      //       },
-      //       {
-      //         name: ".",
-      //         value: "**BORDER**"
-      //       },
-      //       {
-      //         name: ".",
-      //         value: "**CLUB HOUSE**"
-      //       },
-      //       {
-      //         name: ".",
-      //         value: "**COASTLINE**"
-      //       },
-      //       {
-      //         name: ".",
-      //         value: "**CONSULATE**"
-      //       },
-      //       {
-      //         name: ".",
-      //         value: "**OREGON**"
-      //       },
-      //       {
-      //         name: ".",
-      //         value: "**VILLA**"
-      //       }
-      //     ],
-      //     footer: {
-      //       icon_url: client.user.avatarURL,
-      //       text: `The Ramlals Tournament`
-      //     }
-      //   }
-      // });
-
-      message.channel.send({
-         embed: {
-            color: 3447003,
-            author: {
-               name: "MAP-VETO",
-            },
-            description: "List of Maps to choose from... \n **BORDER**, **BANK**, **CLUB HOUSE**, **CONSULATE**,**COASTLINE**, **OREGON**, **VILLA**",
-            footer: {
-               icon_url: client.user.avatarURL,
-               text: `The Ramlals Tournament`
+         message.channel.send({
+            embed: {
+               color: 3447003,
+               author: {
+                  name: "MAP-VETO",
+               },
+               description: "List of Maps to choose from... \n **BORDER**, **BANK**, **CLUB HOUSE**, **CONSULATE**,**COASTLINE**, **OREGON**, **VILLA**",
+               footer: {
+                  icon_url: client.user.avatarURL,
+                  text: `The Ramlals Tournament`
+               }
             }
-         }
-      });
-      message.channel.send(`Please start voting! ${curu.displayName}, How about you go first?`)
+         });
+         message.channel.send(`Please start voting! ${curu.displayName}, How about you go first?`)
 
-   }
+      }
 
-   function reset() {
-      let aRole = message.guild.roles.get('475934116865376267');
-      aRole.members.map(mem => mem.removeRole(aRole));
+      function reset() {
+         let aRole = message.guild.roles.get('475934116865376267');
+         aRole.members.map(mem => mem.removeRole(aRole));
 
-      con.query(`delete from mapveto;`, (err, rows) => {
-         if (err) throw err;
-      });
-      con.query(`insert into mapveto values("bank"),("border"),("consulate"),("coastline"),("oregon"),("club house"),("villa");`, (err, rows) => {
-         if (err) throw err;
-      });
-
-      let newArr = ["bank", "border", "consulate", "coastline", "villa", "club house", "oregon"];
-      arr = newArr;
-   }
-
-   if (message.content.toLowerCase().startsWith('reset') ) {
-      reset();
-   }
-   if (message.content.toLowerCase().startsWith('vote') ) {
-
-      if (message.author != curu.user) {
-         message.channel.send(`Please let ${curu.displayName} vote!`);
-         console.log(curu.displayName + message.author.username);
-      } else {
-
-         let messageArray = message.content.split(" ");
-         let cmd = messageArray[0].toLowerCase();
-         let args = messageArray.slice(1);
-         let map = args.slice(0).join(" ");
-
-         if (curu.user === u1.user) curu = u2;
-         else curu = u1;
-
-         con.query(`delete from mapveto where map = '${map}'`, (err, rows) => {
+         con.query(`delete from mapveto;`, (err, rows) => {
             if (err) throw err;
+         });
+         con.query(`insert into mapveto values("bank"),("border"),("consulate"),("coastline"),("oregon"),("club house"),("villa");`, (err, rows) => {
+            if (err) throw err;
+         });
 
-            //  const allEqual = arr => arr.every(v => v === arr[0]);
-            let flag = 0;
+         let newArr = ["bank", "border", "consulate", "coastline", "villa", "club house", "oregon"];
+         arr = newArr;
+      }
 
-            let check1 = arr.every((val, i, array) => val === array[0]);
-            for (let i = 0; i < arr.length - 1; i++) {
-               if (arr[i] != arr[i + 1]) flag++;
-            }
+      if (message.content.toLowerCase().startsWith('reset')) {
+         reset();
+      }
+      if (message.content.toLowerCase().startsWith('vote')) {
+
+         if (message.author != curu.user) {
+            message.channel.send(`Please let ${curu.displayName} vote!`);
+            console.log(curu.displayName + message.author.username);
+         } else {
+
+            let messageArray = message.content.split(" ");
+            let cmd = messageArray[0].toLowerCase();
+            let args = messageArray.slice(1);
+            let map = args.slice(0).join(" ");
+
+            if (curu.user === u1.user) curu = u2;
+            else curu = u1;
+
+            if(map.toLowerCase() === "club house" || map.toLowerCase() === "clubhouse") map = "club house";
+
+            con.query(`delete from mapveto where map = '${map}'`, (err, rows) => {
+               if (err) throw err;
+
+               //  const allEqual = arr => arr.every(v => v === arr[0]);
+               let flag = 0;
+
+               let check1 = arr.every((val, i, array) => val === array[0]);
+               for (let i = 0; i < arr.length - 1; i++) {
+                  if (arr[i] != arr[i + 1]) flag++;
+               }
 
 
-            if ((flag - 1) > 2 && map.length > 1) {
-               for (let i = 0; i < arr.length; i++) {
-                  if (i == 0) message.channel.send("The remaining maps are: \n -------------------------");
-                  if (arr[i] == `${map}`) {
-                     arr[i] = "";
-                  } else if (arr[i] != ``) {
-                     message.channel.send(`**${arr[i].toUpperCase()}**\n`);
+               if ((flag - 1) > 2 && map.length > 1) {
+                  for (let i = 0; i < arr.length; i++) {
+                     if (i == 0) message.channel.send("The remaining maps are: \n -------------------------");
+                     if (arr[i] == `${map}`) {
+                        arr[i] = "";
+                     }
                   }
                }
-               message.channel.send(`Please vote ${curu.user.username}!`);
-            }
-
-
-            con.query(`select * from mapveto;`, (err, rows) => {
-               if (!rows[1]) {
-                  let votem = rows[0].map;
-                  const chosenmap = new Discord.RichEmbed()
-                     .setColor(3447003)
-                     .setTitle(`**${votem.toUpperCase()}**`)
-                     .setDescription("is the map to be played, Good luck!")
-                  message.channel.send(chosenmap);
-                  //message.channel.send(`map that has been selected is ${votem}`);
-                  reset();
+               let tempArr = [];
+               for (var i = 0; i < arr.length; i++) {
+                  tempArr[i] = arr[i].toUpperCase();
                }
+               message.channel.send(tempArr );
+               message.channel.send("-------------------------");
+               message.channel.send(`Please vote ${curu.user.username}!`);
+
+               con.query(`select * from mapveto;`, (err, rows) => {
+                  if (!rows[1]) {
+                     let votem = rows[0].map;
+                     const chosenmap = new Discord.RichEmbed()
+                        .setColor(3447003)
+                        .setTitle(`**${votem.toUpperCase()}**`)
+                        .setDescription("is the map to be played, Good luck!")
+                     message.channel.send(chosenmap);
+                     //message.channel.send(`map that has been selected is ${votem}`);
+                     reset();
+                  }
+               });
+
             });
-
-
-            console.log(flag);
-         });
+         }
       }
    }
 });
