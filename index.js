@@ -13,6 +13,11 @@ client.commands = new Discord.Collection();
 let isReady = true;
 var Dictionary = require("oxford-dictionary");
 
+let upt = 0;
+setInterval(function () {
+   upt++;
+}, 1000);
+
 var dconfig = {
    app_id: "1cab4a54",
    app_key: "15b3217322111decf6529ce3ac1d74c8",
@@ -172,7 +177,7 @@ client.on('message', msg => {
    let args = messageArray.slice(1);
 
    let commandfile = client.commands.get(cmd);
-   if (commandfile) commandfile.run(client, msg, args, con, config);
+   if (commandfile) commandfile.run(client, msg, args, con, config, upt);
 
    if (msg.content.toLowerCase().startsWith("what rank is ") || msg.content.toLowerCase().startsWith("what is the rank of ")) {
       let rUser = msg.mentions.members.first();
