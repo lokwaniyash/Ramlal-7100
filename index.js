@@ -361,8 +361,23 @@ client.on('message', message => {
    if (message.channel === channel) {
       if (message.content.toLowerCase().startsWith('setleader')) {
 
-         let lead1 = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
-         let lead2 = message.guild.member(message.mentions.users.last());
+         function getUserFromMention(mention) {
+            if (!mention) return;
+
+            if (mention.startsWith('<@') && mention.endsWith('>')) {
+               mention = mention.slice(2, -1);
+
+               if (mention.startsWith('!')) {
+                  mention = mention.slice(1);
+               }
+
+               return message.guild.members.get(mention);
+            }
+         }
+
+
+         let lead1 = getUserFromMention(args[0]);
+         let lead2 = getUserFromMention(args[1]);
          let myRole = message.guild.roles.find(f => f.name == "Team Leader");
 
          u1 = lead1;
@@ -474,7 +489,7 @@ client.on('message', message => {
             if (curu.user === u1.user) curu = u2;
             else curu = u1;
 
-            if(map.toLowerCase() === "club house" || map.toLowerCase() === "clubhouse") map = "club house";
+            if (map.toLowerCase() === "club house" || map.toLowerCase() === "clubhouse") map = "club house";
 
             con.query(`delete from mapveto where map = '${map}'`, (err, rows) => {
                if (err) throw err;
@@ -500,7 +515,7 @@ client.on('message', message => {
                for (var i = 0; i < arr.length; i++) {
                   tempArr[i] = arr[i].toUpperCase();
                }
-               message.channel.send(tempArr );
+               message.channel.send(tempArr);
                message.channel.send("-------------------------");
                message.channel.send(`Please vote ${curu.user.username}!`);
 
