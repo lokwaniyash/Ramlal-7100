@@ -44,15 +44,15 @@ module.exports.run = async (client, message, args, con) => {
                                  description: "Based on the SpinTime Database.",
                                  fields: [{
                                        name: ":trophy: 1",
-                                       value: `@` + spinid1 + ` with maximum spin time of **${aTime1}** minutes and **${bTime1}** seconds.`
+                                       value: `**` + spinid1 + `** with maximum spin time of **${aTime1}** minutes and **${bTime1}** seconds.`
                                     },
                                     {
                                        name: ":trophy: 2",
-                                       value: `@` + spinid2 + ` with maximum spin time of **${aTime2}** minutes and **${bTime2}** seconds.`
+                                       value: `**` + spinid2 + `** with maximum spin time of **${aTime2}** minutes and **${bTime2}** seconds.`
                                     },
                                     {
                                        name: ":trophy: 3",
-                                       value: `@` + spinid3 + ` with maximum spin time of **${aTime3}** minutes and **${bTime3}** seconds.`
+                                       value: `**` + spinid3 + `** with maximum spin time of **${aTime3}** minutes and **${bTime3}** seconds.`
                                     }
                                  ],
                                  footer: {
@@ -92,15 +92,15 @@ module.exports.run = async (client, message, args, con) => {
                   description: "Based on the XP Database.",
                   fields: [{
                         name: ":trophy: 1",
-                        value: "@" + id + " with **" + xp + "** xp."
+                        value: "**" + id + "** with **" + xp + "** xp."
                      },
                      {
                         name: ":trophy: 2",
-                        value: "@" + id2 + " with **" + xp2 + "** xp."
+                        value: "**" + id2 + "** with **" + xp2 + "** xp."
                      },
                      {
                         name: ":trophy: 3",
-                        value: "@" + id3 + " with **" + xp3 + "** xp."
+                        value: "**" + id3 + "** with **" + xp3 + "** xp."
                      }
                   ],
                   footer: {

@@ -6,7 +6,7 @@ module.exports.run = async (client, message, args) => {
   if(args.length >>> "0") return;
   message.channel.send({embed: {
     color: 3447003,
-    description: `It's **${coin[result]}**`
+    description: `Its **${coin[result]}**`
   }})
 }
 

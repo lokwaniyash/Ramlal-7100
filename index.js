@@ -14,7 +14,7 @@ let isReady = true;
 var Dictionary = require("oxford-dictionary");
 
 let upt = 0;
-setInterval(function () {
+setInterval(function() {
    upt++;
 }, 1000);
 
@@ -63,17 +63,25 @@ let watching = 1; // episode count
 let season = 1; // season count
 let sc = 0; // count of every 13 episodes
 let u1, u2, curu; // users for mapveto
+let sec,minute,hour
 
 client.on('ready', () => {
    console.log(`${client.user.tag} is online on ` + client.guilds.size + ` server(s)!`);
    //client.user.setActivity('Oye! Daaru pe Daaru ji');
-   client.user.setActivity(`Saas bhi kabhi Bahu thi Season - ${season}  Episode - ${watching}`, {
+   client.user.setActivity(`Saas bhi kabhi Bahu thi Season - ${season}  Episode - ${watching} for ${hour} Hours ${minute} Minute ${sec} Seconds`, {
       type: 'WATCHING'
    })
    setInterval(function() {
-      client.user.setActivity(`Saas bhi kabhi Bahu thi Season - ${season}  Episode - ${watching}`, {
+      sec = upt;
+      minute = Math.floor(sec / 60);
+      sec -= minute * 60;
+      hour = Math.floor(minute / 60);
+      minute -= hour * 60;
+      client.user.setActivity(`Saas bhi kabhi Bahu thi Season - ${season}  Episode - ${watching} for ${hour} Hours ${minute} Minute ${sec} Seconds`, {
          type: 'WATCHING'
       });
+   }, 1000);
+   setInterval(function() {
       watching++;
       sc++;
       if (sc === 13) {
@@ -181,7 +189,8 @@ client.on('message', msg => {
 
    if (msg.content.toLowerCase().startsWith("what rank is ") || msg.content.toLowerCase().startsWith("what is the rank of ")) {
       let rUser = msg.mentions.members.first();
-      if (!rUser) return msg.channel.send("Please mention someone to know there rank!");
+      if (!rUser) msg.channel.send("Please mention someone to know there rank!");
+      return;
       let ranks = [`Diamond`, `Bronze`, `Silver`, `Copper`, `Platinum`, `Nobody bothered giving ${rUser.displayName} a rank!`];
       let rRand = Math.floor((Math.random() * ranks.length));
       let rRank = ranks[rRand];
@@ -249,56 +258,21 @@ client.on('message', msg => {
 
    con.query(`select xp , id from xp order by xp desc;`, (err, rows) => {
 
-      if (!rows[2]) {
+      if (!rows[0]) {
          return;
       } else {
 
          let xp = rows[0].xp;
-         let xp2 = rows[1].xp;
-         let xp3 = rows[2].xp;
          let id = rows[0].id;
-         let id2 = rows[1].id;
-         let id3 = rows[2].id;
 
-         if (args.length >>> "0") return;
-
-         /*if(msg.content.toLowerCase() === 'leaderboard') {
-           //msg.reply('the person with most xp is <@' + id + '> , then <@' + id2 + '> and <@' + id3 + '>')
-           msg.channel.send({embed: {
-               color: 3447003,
-               author: {
-                 name: "Leaderboards",
-                 icon_url: client.user.avatarURL
-               },
-               description: "Based on the XP Database.",
-               fields: [{
-                   name: ":trophy: 1",
-                   value: "<@" + id + "> with **" + xp + "** xp."
-                 },
-                 {
-                   name: ":trophy: 2",
-                   value: "<@" + id2 + "> with **" + xp2 + "** xp."
-                 },
-                 {
-                   name: ":trophy: 3",
-                   value: "<@" + id3 + "> with **" + xp3 + "** xp."
-                 }
-               ],
-               footer: {
-                 icon_url: client.user.avatarURL,
-                 text: "© TheRamlals"
-               }
-             }
-           });
-
-         }*/
-         if (msg.content.toLowerCase() === "vella") {
+         if (args.length > 0) return;
+         if (msg.content.toLowerCase().startsWith("vella")) {
             msg.channel.send({
                embed: {
                   color: 3447003,
                   fields: [{
                      name: "Ye hai vella!",
-                     value: "<@" + id + "> with **" + xp + "** xp."
+                     value: "**" + id + "** with **" + xp + "** xp."
                   }]
                }
             });
