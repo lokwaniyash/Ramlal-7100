@@ -6,8 +6,6 @@ const client = new Discord.Client({
 });
 const fs = require("fs");
 const mysql = require("mysql");
-const RainbowSixApi = require('rainbowsix-api-node');
-const R6 = new RainbowSixApi();
 const date = new Date();
 client.commands = new Discord.Collection();
 let isReady = true;
@@ -45,7 +43,7 @@ fs.readdir("./commands/", (err, files) => {
 var con = mysql.createConnection({
    host: "localhost",
    user: "root",
-   password: "",
+   password: "root",
    database: "bot"
 });
 
@@ -63,24 +61,24 @@ let watching = 1; // episode count
 let season = 1; // season count
 let sc = 0; // count of every 13 episodes
 let u1, u2, curu; // users for mapveto
-let sec,minute,hour
+let sec,minute,hour // time variables
 
 client.on('ready', () => {
    console.log(`${client.user.tag} is online on ` + client.guilds.size + ` server(s)!`);
    //client.user.setActivity('Oye! Daaru pe Daaru ji');
-   client.user.setActivity(`Saas bhi kabhi Bahu thi Season - ${season}  Episode - ${watching} for ${hour} Hours ${minute} Minute ${sec} Seconds`, {
+   client.user.setActivity(`Saas bhi kabhi Bahu thi Season - ${season}  Episode - ${watching}`, {
       type: 'WATCHING'
    })
-   setInterval(function() {
-      sec = upt;
-      minute = Math.floor(sec / 60);
-      sec -= minute * 60;
-      hour = Math.floor(minute / 60);
-      minute -= hour * 60;
-      client.user.setActivity(`Saas bhi kabhi Bahu thi Season - ${season}  Episode - ${watching} for ${hour} Hours ${minute} Minute ${sec} Seconds`, {
-         type: 'WATCHING'
-      });
-   }, 1000);
+   // setInterval(function() {
+   //    sec = upt;
+   //    minute = Math.floor(sec / 60);
+   //    sec -= minute * 60;
+   //    hour = Math.floor(minute / 60);
+   //    minute -= hour * 60;
+   //    client.user.setActivity(`Saas bhi kabhi Bahu thi Season - ${season}  Episode - ${watching}`, {
+   //       type: 'WATCHING'
+   //    });
+   // }, 1000);
    setInterval(function() {
       watching++;
       sc++;
@@ -141,8 +139,6 @@ client.on('message', msg => {
       if (err) throw err;
 
       let sql;
-
-      console.log(tempU);
 
       if (rows.length < 1) {
          sql = `insert into xp (id,xp) values ('${tempU}','${generateXp()}')`
@@ -431,7 +427,7 @@ client.on('message', message => {
                }
             }
          });
-         message.channel.send(`Please start voting! ${curu.displayName}, How about you go first?`)
+         message.channel.send(`Please start voting! <@${curu.id}>, How about you go first?`)
 
       }
 
@@ -456,7 +452,7 @@ client.on('message', message => {
       if (message.content.toLowerCase().startsWith('vote')) {
 
          if (message.author != curu.user) {
-            message.channel.send(`Please let ${curu.displayName} vote!`);
+            message.channel.send(`Please let <@${curu.id}> vote!`);
             console.log(curu.displayName + message.author.username);
          } else {
 
@@ -496,7 +492,7 @@ client.on('message', message => {
                }
                message.channel.send(tempArr);
                message.channel.send("-------------------------");
-               message.channel.send(`Please vote ${curu.user.username}!`);
+               message.channel.send(`Please vote <@${curu.id}>!`);
 
                con.query(`select * from mapveto;`, (err, rows) => {
                   if (!rows[1]) {

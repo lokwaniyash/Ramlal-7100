@@ -9,7 +9,7 @@ module.exports.run = async (client, message, args) => {
       .addField("challenge @user", "You can get points if you win, they're worthless but atleast you won.")
       .addField("fidgetspin", "Spins a fidget spinner and the one with the highest time goes to the leaderboard.")
       .addField("leaderboard xp/spin", "\"xp\" for XP Leaderboard and \"spin\" for Spinner Leaderboard.")
-      .addField("ping", "Gives the bot Ping!")
+      .addField("ping", "Gives the bot's Ping!")
       .addField("points @user", "Gives the points of the mentioned User!")
       .addField("toss", "At random gives heads or tails!")
       .addField("uptime", "Tells how long I've been awake for!")
