@@ -150,10 +150,10 @@ function hook(channel, title, message, color, avatar) { // This function uses qu
 }
 
 client.on('voiceStateUpdate', (oldMember, newMember) => {
-  // if( newMember.mute || oldMember.mute || newMember.selfMute ||
-  // oldMember.selfMute || newMember.selfDeaf || oldMember.selfDeaf ||
-  // newMember.serverDeaf || oldMember.serverDeaf || newMember.serverMute ||
-  // oldMember.serverMute) return;
+  if( newMember.mute || oldMember.mute || newMember.selfMute ||
+  oldMember.selfMute || newMember.selfDeaf || oldMember.selfDeaf ||
+  newMember.serverDeaf || oldMember.serverDeaf || newMember.serverMute ||
+  oldMember.serverMute) return;
 
   let channel = newMember.guild.channels.find(c => c.name == "vc-logs");
 
@@ -183,7 +183,7 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
   let fr = arr[6];
   // R6
   // if (newMember.voiceChannel) {
-  //   console.log("joined");
+  //
   //   if (newMember.voiceChannel.parentID == r6) {
   //     if (newMember.voiceChannel.members.array().length == 1) {
   //       Extra = 0;
@@ -207,7 +207,7 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
   // }
   //
   // if (oldMember.voiceChannel) {
-  //   console.log("left");
+  //
   //   if (oldMember.voiceChannel.parentID == r6) {
   //     if (oldMember.voiceChannel.members.array().length == 0) {
   //       Extra = 0;
@@ -234,7 +234,7 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
 
   // PUBG
   if (newMember.voiceChannel) {
-    console.log("joined");
+
     if (newMember.voiceChannel.parentID == pubg) {
       if (newMember.voiceChannel.members.array().length == 1) {
         Extra = 0;
@@ -258,7 +258,7 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
   }
 
   if (oldMember.voiceChannel) {
-    console.log("left");
+
     if (oldMember.voiceChannel.parentID == pubg) {
       if (oldMember.voiceChannel.members.array().length == 0) {
         Extra = 0;
@@ -285,7 +285,7 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
 //
 //   // GTA
   if (newMember.voiceChannel) {
-    console.log("joined");
+
     if (newMember.voiceChannel.parentID == gta) {
       if (newMember.voiceChannel.members.array().length == 1) {
         Extra = 0;
@@ -309,7 +309,7 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
   }
 
   if (oldMember.voiceChannel) {
-    console.log("left");
+
     if (oldMember.voiceChannel.parentID == gta) {
       if (oldMember.voiceChannel.members.array().length == 0) {
         Extra = 0;
@@ -336,7 +336,7 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
 
   // Fortnite
   if (newMember.voiceChannel) {
-    console.log("joined");
+
     if (newMember.voiceChannel.parentID == fn) {
       if (newMember.voiceChannel.members.array().length == 1) {
         Extra = 0;
@@ -360,7 +360,7 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
   }
 
   if (oldMember.voiceChannel) {
-    console.log("left");
+
     if (oldMember.voiceChannel.parentID == fn) {
       if (oldMember.voiceChannel.members.array().length == 0) {
         Extra = 0;
@@ -387,7 +387,7 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
 
   // Warrock
   if (newMember.voiceChannel) {
-    console.log("joined");
+
     if (newMember.voiceChannel.parentID == wr) {
       if (newMember.voiceChannel.members.array().length == 1) {
         Extra = 0;
@@ -411,7 +411,7 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
   }
 
   if (oldMember.voiceChannel) {
-    console.log("left");
+
     if (oldMember.voiceChannel.parentID == wr) {
       if (oldMember.voiceChannel.members.array().length == 0) {
         Extra = 0;
@@ -438,7 +438,7 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
 
   // Rocket league
   if (newMember.voiceChannel) {
-    console.log("joined");
+
     if (newMember.voiceChannel.parentID == rl) {
       if (newMember.voiceChannel.members.array().length == 1) {
         Extra = 0;
@@ -462,7 +462,7 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
   }
 
   if (oldMember.voiceChannel) {
-    console.log("left");
+
     if (oldMember.voiceChannel.parentID == rl) {
       if (oldMember.voiceChannel.members.array().length == 0) {
         Extra = 0;
@@ -489,7 +489,7 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
 
   // Forest
   if (newMember.voiceChannel) {
-    console.log("joined");
+
     if (newMember.voiceChannel.parentID == fr) {
       if (newMember.voiceChannel.members.array().length == 1) {
         Extra = 0;
@@ -513,7 +513,7 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
   }
 
   if (oldMember.voiceChannel) {
-    console.log("left");
+
     if (oldMember.voiceChannel.parentID == fr) {
       if (oldMember.voiceChannel.members.array().length == 0) {
         Extra = 0;
