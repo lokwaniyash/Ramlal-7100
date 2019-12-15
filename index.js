@@ -9,7 +9,18 @@ const mysql = require("mysql");
 const date = new Date();
 client.commands = new Discord.Collection();
 let isReady = true;
-var Dictionary = require("oxford-dictionary");
+// var Dictionary = require("oxford-dictionary");
+
+
+// Global Variables
+let watching = 1; // episode count
+let season = 1; // season count
+let u1, u2, curu; // users for mapveto
+let sec, minute, hour // time variables
+let cue = {
+  "season": 1,
+  "episode": 1
+};
 
 let upt = 0;
 setInterval(function() {
@@ -22,7 +33,21 @@ var dconfig = {
   source_lang: "en"
 };
 
-var dict = new Dictionary(dconfig);
+// var dict = new Dictionary(dconfig);
+
+fs.readFile('./cue.json','utf8',(err,jsonString) => {
+  if(err){
+    console.log('An oopsy happened',err);
+  }
+  try{
+    const thing = JSON.parse(jsonString);
+    season = thing.season;
+    watching = thing.episode;
+  } catch(err){
+    console.log('another oopsy');
+    throw err;
+  }
+});
 
 fs.readdir("./commands/", (err, files) => {
 
@@ -56,12 +81,6 @@ function generateXp() {
   return Math.floor(Math.random() * (30 - 10 + 1)) + 10;
 }
 
-// Global Variables
-let watching = 1; // episode count
-let season = 1; // season count
-let u1, u2, curu; // users for mapveto
-let sec, minute, hour // time variables
-
 client.on('ready', () => {
   console.log(`${client.user.tag} is online on ` + client.guilds.size + ` server(s)!`);
   //client.user.setActivity('Oye! Daaru pe Daaru ji');
@@ -86,7 +105,17 @@ client.on('ready', () => {
     }
     client.user.setActivity(`Saas bhi kabhi Bahu thi Season - ${season}  Episode - ${watching}`, {
       type: 'WATCHING'
-    })
+    });
+
+    cue = {
+      "season": season,
+      "episode": watching
+    };
+
+    let jsonThingy = JSON.stringify(cue);
+    fs.writeFile('./cue.json',jsonThingy,err => {
+      if(err) console.log("whoa, another oopsy bro",err);
+    });
   }, 30 * 60 * 1000);
   //.then(presence => console.log(`Activity set to ${presence.game ? presence.game.name : 'Daaru is love, Daaru is life!'}`))
   //console.log(test.array[2])
@@ -182,55 +211,55 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
   let rl = arr[5];
   let fr = arr[6];
   // R6
-  // if (newMember.voiceChannel) {
-  //
-  //   if (newMember.voiceChannel.parentID == r6) {
-  //     if (newMember.voiceChannel.members.array().length == 1) {
-  //       Extra = 0;
-  //       client.guilds.get('387214864650600461').channels.forEach(channel => {
-  //         if (channel.parentID == r6) {
-  //           if (channel.members.array().length == 0) {
-  //             if (Extra == 1) {
-  //               channel.delete();
-  //             } else {
-  //               Extra = 1;
-  //             }
-  //           }
-  //         }
-  //       });
-  //       if (Extra == 0) newMember.guild.createChannel('🎮 Game Channel', 'voice')
-  //         .then(
-  //           ch => ch.setParent(r6)
-  //         );
-  //     }
-  //   }
-  // }
-  //
-  // if (oldMember.voiceChannel) {
-  //
-  //   if (oldMember.voiceChannel.parentID == r6) {
-  //     if (oldMember.voiceChannel.members.array().length == 0) {
-  //       Extra = 0;
-  //       client.guilds.get('387214864650600461').channels.forEach(channel => {
-  //         if (channel.parentID == r6) {
-  //           if (channel.members.array().length == 0) {
-  //             if (Extra == 1) {
-  //               if (channel) {
-  //                 channel.delete();
-  //               }
-  //             } else {
-  //               Extra = 1;
-  //             }
-  //           }
-  //         }
-  //       });
-  //       if (Extra == 0) oldMember.guild.channels.createChannel('🎮 Game Channel', 'voice')
-  //         .then(
-  //           ch => ch.setParent(r6)
-  //         );
-  //     }
-  //   }
-  // }
+  if (newMember.voiceChannel) {
+
+    if (newMember.voiceChannel.parentID == r6) {
+      if (newMember.voiceChannel.members.array().length == 1) {
+        Extra = 0;
+        client.guilds.get('387214864650600461').channels.forEach(channel => {
+          if (channel.parentID == r6) {
+            if (channel.members.array().length == 0) {
+              if (Extra == 1) {
+                channel.delete();
+              } else {
+                Extra = 1;
+              }
+            }
+          }
+        });
+        if (Extra == 0) newMember.guild.createChannel('R6 Squad', 'voice')
+          .then(
+            ch => ch.setParent(r6)
+          );
+      }
+    }
+  }
+
+  if (oldMember.voiceChannel) {
+
+    if (oldMember.voiceChannel.parentID == r6) {
+      if (oldMember.voiceChannel.members.array().length == 0) {
+        Extra = 0;
+        client.guilds.get('387214864650600461').channels.forEach(channel => {
+          if (channel.parentID == r6) {
+            if (channel.members.array().length == 0) {
+              if (Extra == 1) {
+                if (channel) {
+                  channel.delete();
+                }
+              } else {
+                Extra = 1;
+              }
+            }
+          }
+        });
+        if (Extra == 0) oldMember.guild.channels.createChannel('R6 Squad', 'voice')
+          .then(
+            ch => ch.setParent(r6)
+          );
+      }
+    }
+  }
 
   // PUBG
   if (newMember.voiceChannel) {
